@@ -4,10 +4,12 @@
   "private": true,
   "homepage": "http://PreyanshK.github.io/covid-19-tracker-app",
   "dependencies": {
+    "@material-ui/core": "^4.11.0",
     "@testing-library/jest-dom": "^5.11.5",
     "@testing-library/react": "^11.1.1",
     "@testing-library/user-event": "^12.2.0",
     "axios": "^0.21.0",
+    "chart.js": "^2.9.4",
     "classnames": "^2.2.6",
     "react": "^17.0.1",
     "react-chartjs-2": "^2.10.0",
@@ -22,7 +24,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build" 
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
