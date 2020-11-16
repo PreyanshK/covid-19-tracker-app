@@ -22,10 +22,12 @@ function CountryPicker({ handleCountryChange }) {
     // console.log(fetchedCountries)
 
     return(
+        //Ensure that global is an empty string value
+        //So in ./api/Index.js, the country will be null - "", which will ensure a line graph is generated
         <FormControl className={styles.formControl}>
             <NativeSelect defaultValue="" onChange={ (event) => handleCountryChange(event.target.value)}>
                 
-                <option value="global">Global</option>
+                <option value="">Global</option>
                 
                 {fetchedCountries.map((country, i) =><option key={i} value={country}>{country}</option>)}
             </NativeSelect>
