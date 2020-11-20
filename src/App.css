@@ -4,7 +4,7 @@
 }
 
 body {
-  background-color: rgb(250, 250, 250);
+  background-color: #f5f6fa;
 }
 
 .container {
@@ -18,6 +18,11 @@ body {
   display: flex;
   align-items: center;
   margin-bottom: 20px;
+  justify-content: space-between;
+}
+
+.app__info {
+  display: flex;
   justify-content: space-between;
 }
 

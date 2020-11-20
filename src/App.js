@@ -4,7 +4,10 @@ import {Cards, Chart, CountryPicker} from './components'
 import styles from './App.module.css'
 import { fetchData } from './api' //index file is imported from the parent folder
 import { MenuItem, FormControl, Select, Menu } from '@material-ui/core'
+import InfoCard from "./components/InfoCard"
+import Map from "./components/Map"
 import "./App.css"
+
 
 // class App extends React.Component {
 
@@ -81,35 +84,48 @@ function App() {
     }, []);
 
     // we need to create an onChange method to update the selected country
-    // as
+    // async - 
     const handleCountryChange = async (event) => {
 
         //get selected value in the dropdown (country)
         const countryCode = event.target.value;
-
-        console.log("YOOOO", countryCode);
-
         setCountry(countryCode);
     }
 
     return(
         <div className="app">
-            <div className="app__header">
-                <h1>COVID-19 TRACKER</h1>
-                    <FormControl className="app__dropdown">
-                        <Select variant="outlined" onChange={handleCountryChange} value={country}>
-                            <MenuItem value="worldwide">Worldwide</MenuItem>
+            <div className="app__leftContainer">
+                <div className="app__header">
+                    <h1>COVID-19 TRACKER</h1>
+                        <FormControl className="app__dropdown">
+                            <Select variant="outlined" onChange={handleCountryChange} value={country}>
+                                <MenuItem value="worldwide">Worldwide</MenuItem>
 
-                            {/* Loop through all the countries 
-                            and populate them in the country dropdown*/}
+                                {/* Loop through all the countries 
+                                and populate them in the country dropdown*/}
 
-                            {countries.map((country) => (
-                                <MenuItem value={country.value}>{country.name}</MenuItem>
-                            ))}
+                                {countries.map((country) => (
+                                    <MenuItem value={country.value}>{country.name}</MenuItem>
+                                ))}
 
-                        </Select>
-                    </FormControl>
-            </div>
+                            </Select>
+                        </FormControl>
+                </div>
+
+                <div className="app__info">
+                    <InfoCard title="Confirmed Cases" cases={100} total={3000}/>
+
+                    <InfoCard title="Recovered Cases" cases={250} total={2000}/>
+
+                    <InfoCard title="Deaths" cases={120} total={1000}/>
+                </div>
+
+                <Map />
+            </div>  
+            <div className="app__rightContainer">
+                {/* Cases Table */}
+                {/* Graph */}
+            </div>     
         </div>
     )
 }
