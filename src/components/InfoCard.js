@@ -16,7 +16,7 @@ function InfoCard({title, cases, total}) {
 
                     {/*  Total Cases */}
                     <Typography clasName="infoCard__total" color="textSecondary">
-                        {total} in Total
+                        {total} Total
                     </Typography>
                 </CardContent>
             </Card>

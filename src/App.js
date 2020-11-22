@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react'
 
-import {Cards, Chart, CountryPicker} from './components'
+// import {Cards, Chart, CountryPicker} from './components'
 import styles from './App.module.css'
 import { fetchData } from './api' //index file is imported from the parent folder
-import { MenuItem, FormControl, Select, Menu } from '@material-ui/core'
+import { MenuItem, FormControl, Select, Menu, Card, CardContent } from '@material-ui/core'
 import InfoCard from "./components/InfoCard"
 import Map from "./components/Map"
+import Table from "./components/Table"
 import "./App.css"
 
 
@@ -61,6 +62,18 @@ function App() {
 
     const [countries, setCountries] = useState([]);
     const [country, setCountry] = useState("worldwide");
+    const [countryInfo, setCountryInfo] = useState({});
+    const [tableData, setTableData] = useState([]);
+
+    //When this component first loads, pull worldwide info (default country)
+    useEffect(() => {
+        fetch("https://disease.sh/v3/covid-19/all")
+        .then(response => response.json())
+        .then(data => {
+            setCountryInfo(data);
+        });
+
+    }, []);
 
     useEffect(() => {
 
@@ -75,6 +88,8 @@ function App() {
                     name: country.country, // Full Name : United States
                     value: country.countryInfo.iso2, // Short Name: USA, UK
                 }));
+
+                setTableData(data);
                 setCountries(countries);
             });
         }
@@ -89,9 +104,24 @@ function App() {
 
         //get selected value in the dropdown (country)
         const countryCode = event.target.value;
-        setCountry(countryCode);
-    }
 
+        //Call API to pull data for the chosen country
+        //If world wide is selected call worlwide API,
+        //Else pull the info for the chosen country
+
+        const url = countryCode === "worldwide" 
+        ? "https://disease.sh/v3/covid-19/all" 
+        : `https://disease.sh/v3/covid-19/countries/${countryCode}`;
+        
+        await fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            setCountry(countryCode);
+            //All of the dat from the country response
+            setCountryInfo(data);
+        });
+    }
+    console.log("COUNTRY INFO >>>", countryInfo)
     return(
         <div className="app">
             <div className="app__leftContainer">
@@ -113,19 +143,37 @@ function App() {
                 </div>
 
                 <div className="app__info">
-                    <InfoCard title="Confirmed Cases" cases={100} total={3000}/>
-
-                    <InfoCard title="Recovered Cases" cases={250} total={2000}/>
-
-                    <InfoCard title="Deaths" cases={120} total={1000}/>
+                    <InfoCard 
+                        title="Confirmed Cases" 
+                        cases={countryInfo.todayCases} 
+                        total={countryInfo.cases}
+                    />
+                    <InfoCard 
+                        title="Recovered Cases"
+                        cases={countryInfo.todayRecovered}
+                        total={countryInfo.recovered}
+                    />
+                    <InfoCard 
+                        title="Deaths"
+                        cases={countryInfo.todayDeaths}
+                        total={countryInfo.deaths}
+                    />
                 </div>
 
                 <Map />
             </div>  
-            <div className="app__rightContainer">
-                {/* Cases Table */}
-                {/* Graph */}
-            </div>     
+            <Card className="app__rightContainer">
+                <CardContent>
+
+                    {/* Cases Table */}
+                    <h3>Live Cases by Country</h3>
+                    <Table countries={tableData}/>
+                    {/* Graph */}
+                    <h3>Worldwide new cases</h3>
+                    
+                </CardContent>
+
+            </Card>     
         </div>
     )
 }

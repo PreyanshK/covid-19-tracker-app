@@ -7,11 +7,17 @@ body {
   background-color: #f5f6fa;
 }
 
-.container {
+/* .container {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+} */
+
+.app {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 20px;
 }
 
 .app__header {
@@ -21,13 +27,21 @@ body {
   justify-content: space-between;
 }
 
+.app__leftContainer {
+  flex: 0.9;
+}
+
 .app__info {
   display: flex;
   justify-content: space-between;
 }
 
-@media (max-width: 960px) {
-  .container {
+@media (max-width: 990px) {
+  /* .container {
     margin: 0 10%;
+  } */
+
+  .app {
+    flex-direction: column;
   }
 }
