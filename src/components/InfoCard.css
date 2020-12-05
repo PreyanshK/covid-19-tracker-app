@@ -1,0 +1,47 @@
+.infoCard {
+  flex: 1;
+  cursor: pointer;
+}
+
+.infoCard:not(:last-child) {
+  margin-right: 15px;
+}
+
+.infoCard--selected {
+  border-bottom: 10px solid rgba(255, 202, 40, 1);
+}
+
+.infoCard--casesSelected {
+  border-color: rgba(255, 202, 40, 1);
+}
+
+.infoCard--recoveredSelected {
+  border-color: rgba(125, 215, 29, 1);
+}
+
+.infoCard--deathsSelected {
+  border-color: rgba(244, 67, 54, 1);
+}
+
+.infoCard__cases--yellow {
+  color: #ffb300 !important;
+}
+
+.infoCard__recovered--green {
+  color: #8bc34a !important;
+}
+
+.infoCard__cases {
+  color: #cc1034;
+  font-weight: 600;
+  font-size: 1.75rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.infoCard__total {
+  color: #6c757d;
+  font-weight: 700 !important;
+  font-size: 1rem !important;
+  margin-top: 15px !important;
+}

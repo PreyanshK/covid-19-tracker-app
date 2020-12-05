@@ -3,12 +3,17 @@ import React, {useState, useEffect} from 'react'
 // import {Cards, Chart, CountryPicker} from './components'
 import styles from './App.module.css'
 import { fetchData } from './api' //index file is imported from the parent folder
-import { MenuItem, FormControl, Select, Menu, Card, CardContent } from '@material-ui/core'
+import { MenuItem, FormControl, Select, Menu, Card, CardContent, Typography } from '@material-ui/core'
 import InfoCard from "./components/InfoCard"
 import Map from "./components/Map"
 import Table from "./components/Table"
+import LineGraph from "./components/LineGraph"
 import "./App.css"
+import { sortData , prettyPrintStat } from "./utilities"
+import "leaflet/dist/leaflet.css"
 
+// import InfoBox from "./InfoBox"
+// import InfoBox from "./components/InfoBox"
 
 // class App extends React.Component {
 
@@ -65,6 +70,14 @@ function App() {
     const [countryInfo, setCountryInfo] = useState({});
     const [tableData, setTableData] = useState([]);
 
+    // Center Coordinates
+    const [mapCenter, setMapCenter] = useState({ lat: 34.80746, lng: -40.4796 });
+    const [mapZoom, setMapZoom] = useState(3);
+    const [mapCountries, setMapCountries] = useState([]);
+
+    //set default case type on map and chart to Confirmed cases
+    const [casesType, setCasesType] = useState("cases");
+
     //When this component first loads, pull worldwide info (default country)
     useEffect(() => {
         fetch("https://disease.sh/v3/covid-19/all")
@@ -89,7 +102,10 @@ function App() {
                     value: country.countryInfo.iso2, // Short Name: USA, UK
                 }));
 
-                setTableData(data);
+                //use the sorting algorithm from utilities
+                const sortedData = sortData(data);
+                setTableData(sortedData);
+                setMapCountries(data);
                 setCountries(countries);
             });
         }
@@ -119,61 +135,95 @@ function App() {
             setCountry(countryCode);
             //All of the dat from the country response
             setCountryInfo(data);
+
+            // setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
+            // setMapZoom(4);
+
+            if (countryCode === "worldwide") {
+                setMapCenter([34.80746, -40.4796]);
+                setMapZoom(3);
+            } else {
+                setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
+                setMapZoom(4);
+            }
         });
     }
     console.log("COUNTRY INFO >>>", countryInfo)
     return(
         <div className="app">
-            <div className="app__leftContainer">
-                <div className="app__header">
-                    <h1>COVID-19 TRACKER</h1>
-                        <FormControl className="app__dropdown">
-                            <Select variant="outlined" onChange={handleCountryChange} value={country}>
-                                <MenuItem value="worldwide">Worldwide</MenuItem>
+            <div className="app_page-container">
+                <div className="app__leftContainer">
+                    <div className="app__header">
+                        <Typography variant="h3" className="app__header-title">COVID-19 TRACKER</Typography>
+                            <FormControl className="app__dropdown">
+                                <Select variant="outlined" onChange={handleCountryChange} value={country}>
+                                    <MenuItem value="worldwide">Worldwide</MenuItem>
 
-                                {/* Loop through all the countries 
-                                and populate them in the country dropdown*/}
+                                    {/* Loop through all the countries 
+                                    and populate them in the country dropdown*/}
 
-                                {countries.map((country) => (
-                                    <MenuItem value={country.value}>{country.name}</MenuItem>
-                                ))}
+                                    {countries.map((country) => (
+                                        <MenuItem value={country.value}>{country.name}</MenuItem>
+                                    ))}
 
-                            </Select>
-                        </FormControl>
-                </div>
+                                </Select>
+                            </FormControl>
+                    </div>
 
-                <div className="app__info">
-                    <InfoCard 
-                        title="Confirmed Cases" 
-                        cases={countryInfo.todayCases} 
-                        total={countryInfo.cases}
+                    <div className="app__info">
+                        <InfoCard
+                            active={casesType === "cases"} 
+                            isCases
+                            onClick={(e) => setCasesType("cases")}
+                            title="Confirmed Cases" 
+                            cases={countryInfo.todayCases} 
+                            total={countryInfo.cases}
+                        />
+                        <InfoCard
+                            active={casesType === "recovered"}
+                            isRecovered
+                            onClick={(e) => setCasesType("recovered")}
+                            title="Recovered Cases"
+                            cases={countryInfo.todayRecovered}
+                            total={countryInfo.recovered}
+                        />
+                        <InfoCard
+                            active={casesType === "deaths"}
+                            isDeaths 
+                            onClick={(e) => setCasesType("deaths")}
+                            title="Deaths"
+                            cases={countryInfo.todayDeaths}
+                            total={countryInfo.deaths}
+                        />
+                    </div>
+
+                    <Map 
+                        casesType={casesType}
+                        countries={mapCountries}
+                        center={mapCenter}
+                        zoom={mapZoom}
                     />
-                    <InfoCard 
-                        title="Recovered Cases"
-                        cases={countryInfo.todayRecovered}
-                        total={countryInfo.recovered}
-                    />
-                    <InfoCard 
-                        title="Deaths"
-                        cases={countryInfo.todayDeaths}
-                        total={countryInfo.deaths}
-                    />
-                </div>
+                </div>  
+                <Card className="app__rightContainer">
+                    <CardContent>
 
-                <Map />
-            </div>  
-            <Card className="app__rightContainer">
-                <CardContent>
+                        {/* Cases Table */}
+                        <h3>Live Cases by Country</h3>
+                        <Table countries={tableData}/>
 
-                    {/* Cases Table */}
-                    <h3>Live Cases by Country</h3>
-                    <Table countries={tableData}/>
-                    {/* Graph */}
-                    <h3>Worldwide new cases</h3>
-                    
-                </CardContent>
+                        {/* Graph */}
+                        <h3 className="app__graphTitle">Daily {casesType}</h3>
+                        <LineGraph className="app__graph" casesType={casesType}/>
+                    </CardContent>
 
-            </Card>     
+                </Card>  
+            </div>
+            
+            <div className="app__footer">
+                <Typography className="app__header-title">
+                    &copy; Preyansh Kachhia {new Date().getFullYear()}
+                </Typography>         
+            </div> 
         </div>
     )
 }
