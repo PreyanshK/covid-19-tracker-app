@@ -23,9 +23,9 @@ export const sortData = (data) => {
 
     const sortedData = [...data];
 
-    // loop trhough entire list
-    // run comparison for every two items
-    // based on sorting condition
+    // loop through entire list of countries
+    // compare very two country
+    // arrange list based on sorting condition
 
     sortedData.sort((a, b) => {
         if(a.cases > b.cases) {

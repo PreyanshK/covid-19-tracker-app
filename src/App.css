@@ -34,9 +34,9 @@ body {
 }
 
 .app__header-title {
-  /* color: rgba(244, 67, 54, 1); */
   color: #6c757d;
-  font-size: 0.5rem;
+  font-size: 50px;
+  font-weight: 500;
 }
 
 .app__dropdown {
@@ -75,8 +75,6 @@ body {
 
 .app__footer {
   text-align: center;
-  position: relative;
-  bottom: 0;
   background-color: #6c757d;
   height: 60px;
 }
@@ -93,5 +91,14 @@ body {
 
   .app_page-container {
     flex-direction: column;
+  }
+
+  .app__info {
+    flex-direction: column;
+  }
+
+  .app__header-title {
+    font-size: 35px;
+    font-weight: 500;
   }
 }

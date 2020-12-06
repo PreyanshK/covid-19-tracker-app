@@ -1,8 +1,4 @@
 import React, {useState, useEffect} from 'react'
-
-// import {Cards, Chart, CountryPicker} from './components'
-import styles from './App.module.css'
-import { fetchData } from './api' //index file is imported from the parent folder
 import { MenuItem, FormControl, Select, Menu, Card, CardContent, Typography } from '@material-ui/core'
 import InfoCard from "./components/InfoCard"
 import Map from "./components/Map"
@@ -11,44 +7,6 @@ import LineGraph from "./components/LineGraph"
 import "./App.css"
 import { sortData , prettyPrintStat } from "./utilities"
 import "leaflet/dist/leaflet.css"
-
-// import InfoBox from "./InfoBox"
-// import InfoBox from "./components/InfoBox"
-
-// class App extends React.Component {
-
-//     state = {
-//         data: {},
-//         country: ''
-//     }
-
-//     async componentDidMount () {
-//         const fetchedData = await fetchData()
-//         this.setState({data: fetchedData})
-//     }
-
-//     handleCountryChange = async (country) => {
-        
-//         //fetch data for the country chosen
-//         const fetchedData = await fetchData(country)
-
-//        //set state for the country chosen
-//        this.setState({data: fetchedData, country: country })
-           
-//     }
-//     render() {
-
-//         const { data, country } = this.state
-
-//         return(
-//             <div className={styles.container}>
-//                 <Cards data={data}/>
-//                 <CountryPicker handleCountryChange={this.handleCountryChange}/>
-//                 <Chart data={data} country={country}/>
-//             </div>
-//         )
-//     }
-// }
 
 function App() {
 
@@ -115,7 +73,6 @@ function App() {
     }, []);
 
     // we need to create an onChange method to update the selected country
-    // async - 
     const handleCountryChange = async (event) => {
 
         //get selected value in the dropdown (country)
@@ -136,9 +93,6 @@ function App() {
             //All of the dat from the country response
             setCountryInfo(data);
 
-            // setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
-            // setMapZoom(4);
-
             if (countryCode === "worldwide") {
                 setMapCenter([34.80746, -40.4796]);
                 setMapZoom(3);
@@ -148,13 +102,15 @@ function App() {
             }
         });
     }
-    console.log("COUNTRY INFO >>>", countryInfo)
+
+    console.log("COUNTRY INFO >>>", countryInfo);
+    
     return(
         <div className="app">
             <div className="app_page-container">
                 <div className="app__leftContainer">
                     <div className="app__header">
-                        <Typography variant="h3" className="app__header-title">COVID-19 TRACKER</Typography>
+                        <h2 className="app__header-title">COVID-19 TRACKER</h2>
                             <FormControl className="app__dropdown">
                                 <Select variant="outlined" onChange={handleCountryChange} value={country}>
                                     <MenuItem value="worldwide">Worldwide</MenuItem>
@@ -208,11 +164,14 @@ function App() {
                     <CardContent>
 
                         {/* Cases Table */}
-                        <h3>Live Cases by Country</h3>
-                        <Table countries={tableData}/>
+                        <h3>Total Cases By Country</h3>
+                        <Table 
+                            casesType={casesType}
+                            countries={tableData}
+                        />
 
                         {/* Graph */}
-                        <h3 className="app__graphTitle">Daily {casesType}</h3>
+                        <h3 className="app__graphTitle"> Worldwide Daily {casesType}</h3>
                         <LineGraph className="app__graph" casesType={casesType}/>
                     </CardContent>
 

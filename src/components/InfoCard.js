@@ -20,12 +20,11 @@ function InfoCard({title, cases, total, active, isCases, isRecovered, isDeaths, 
                 </Typography>
 
                 {/* Daily Cases */}
-               {/* <Typography variant="h4" className={`infoCard__cases ${isCases && "infoCard__cases--yellow"} ${isRecovered && "infoCard__recovered--green"}`}>{cases}</Typography>  */}
                <h2 className={`infoCard__cases ${isCases && "infoCard__cases--yellow"} ${isRecovered && "infoCard__recovered--green"}`}>{numeral(cases).format("0,0")}</h2>
 
                 {/*  Total Cases */}
                 <Typography className="infoCard__total" color="textSecondary">
-                {numeral(total).format("0,0")} Total
+                {numeral(total).format("0,0")} in Total
                 </Typography>
             </CardContent>
         </Card>

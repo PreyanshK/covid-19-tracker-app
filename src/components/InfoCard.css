@@ -33,7 +33,7 @@
 
 .infoCard__cases {
   color: #cc1034;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 1.75rem;
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
@@ -41,7 +41,14 @@
 
 .infoCard__total {
   color: #6c757d;
-  font-weight: 700 !important;
-  font-size: 1rem !important;
+  font-weight: 500 !important;
+  font-size: 1.2rem !important;
   margin-top: 15px !important;
+}
+
+@media (max-width: 990px) {
+  .infoCard:not(:last-child) {
+    margin-right: 0px;
+    margin-bottom: 15px;
+  }
 }
