@@ -8,13 +8,6 @@ body {
   font-family: "Open Sans", sans-serif;
 }
 
-/* .container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-} */
-
 .app {
   display: flex;
   flex-direction: column;
@@ -75,20 +68,15 @@ body {
 
 .app__footer {
   text-align: center;
-  background-color: #6c757d;
   height: 60px;
 }
 
 .app__footer p {
-  color: white;
+  color: #6c757d;
   margin-top: 15px;
 }
 
 @media (max-width: 990px) {
-  /* .container {
-    margin: 0 10%;
-  } */
-
   .app_page-container {
     flex-direction: column;
   }
